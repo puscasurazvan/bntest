@@ -1,23 +1,33 @@
-import { useFetchQuestions, useUserFromUrl } from "../../hooks";
+import {
+  useFetchQuestions,
+  useSubmitAnswers,
+  useUserFromUrl,
+} from "../../hooks";
 import "./Questionnaire.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { QuestionOptions } from "./components";
 
 export const Questionnaire = () => {
   const user = useUserFromUrl();
   const { data, isLoading, isError, error } = useFetchQuestions(user);
+  const { mutate: submitAnswers, isPending } = useSubmitAnswers();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [animationDirection, setAnimationDirection] = useState<
     "down" | "up" | null
   >(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [answers, setAnswers] = useState<
+    Array<{ questionId: string; answer: number }>
+  >([]);
   const questionsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setCurrentQuestionIndex(0);
     setAnimationDirection(null);
     setIsAnimating(false);
+    setAnswers([]);
   }, [data]);
 
   const changeQuestion = useCallback(
@@ -63,10 +73,56 @@ export const Questionnaire = () => {
     };
   }, [isAnimating, goToNextQuestion, goToPrevQuestion, data]);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isAnimating) return;
+
+      if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+        event.preventDefault();
+        goToNextQuestion();
+      } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+        event.preventDefault();
+        goToPrevQuestion();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isAnimating, goToNextQuestion, goToPrevQuestion]);
+
+  const handleSelectOption = (questionId: string, option: number) => {
+    setAnswers((prevAnswers) => {
+      const existingAnswerIndex = prevAnswers.findIndex(
+        (answer) => answer.questionId === questionId
+      );
+
+      if (existingAnswerIndex !== -1) {
+        const updatedAnswers = [...prevAnswers];
+        updatedAnswers[existingAnswerIndex] = { questionId, answer: option };
+        return updatedAnswers;
+      } else {
+        return [...prevAnswers, { questionId, answer: option }];
+      }
+    });
+    setTimeout(() => {
+      goToNextQuestion();
+    }, 300);
+  };
+
+  const allQuestionsAnswered =
+    data?.questions && answers.length === data.questions.length;
+
+  const handleSubmit = () => {
+    if (allQuestionsAnswered && user) {
+      submitAnswers({ user, answers });
+    }
+  };
+
   if (!user) {
     return (
       <div className="questionnaire">
-        <h1>Questionnaire</h1>
         <div className="error-message">
           <p>Please provide a user parameter in the URL.</p>
         </div>
@@ -77,7 +133,6 @@ export const Questionnaire = () => {
   if (isLoading) {
     return (
       <div className="questionnaire">
-        <h1>Questionnaire</h1>
         <p>Loading your questions...</p>
       </div>
     );
@@ -86,7 +141,6 @@ export const Questionnaire = () => {
   if (isError) {
     return (
       <div className="questionnaire">
-        <h1>Questionnaire</h1>
         <div className="error-message">
           <p>Error loading questions: {error?.message}</p>
           <p>Please try again later.</p>
@@ -137,22 +191,47 @@ export const Questionnaire = () => {
                 animate="center"
                 exit="exit"
               >
-                <div className="question-content">
+                <div className="questions-wrapper">
                   <span className="question-number">
                     Q{currentQuestionIndex + 1}/{totalQuestions}{" "}
                   </span>
-                  <div className="question-text">
+                  <div className="questions-text-wrapper">
                     <p>In a job, I would be motivated by:</p>
                     <p>{currentQuestion.text}</p>
+                    <QuestionOptions
+                      onSelectOption={(option) =>
+                        handleSelectOption(currentQuestion.id, option)
+                      }
+                      selectedOption={
+                        answers.find(
+                          (answer) => answer.questionId === currentQuestion.id
+                        )?.answer ?? null
+                      }
+                    />
                   </div>
                 </div>
               </motion.div>
             </AnimatePresence>
-            <p>
-              To review your previous answers, scroll back before selecting
-              finish
-            </p>
           </div>
+          {allQuestionsAnswered && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="finish-button-container"
+            >
+              <button
+                onClick={handleSubmit}
+                disabled={isPending}
+                className="finish-button"
+              >
+                {isPending ? "Submitting..." : "Finish"}
+              </button>
+            </motion.div>
+          )}
+          <p>
+            To review your previous answers, scroll back before selecting finish
+          </p>
         </div>
       )}
     </div>

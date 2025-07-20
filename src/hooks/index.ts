@@ -1,1 +1,3 @@
-export { useFetchQuestions, useUserFromUrl } from "./useApiData.ts";
+export * from "./useApiData";
+export * from "./useSubmitAnswers";
+

@@ -6,22 +6,32 @@
   justify-content: center;
   overflow: hidden;
   padding: 50px;
+  width: 100%;
 }
 
 .question-number {
   color: red;
 }
 
-.question-content {
-  display: flex;
-  flex-direction: row;
-}
-
-.question-text {
+.questions-text-wrapper {
   display: flex;
   flex-direction: column;
   margin-left: 12px;
   > * {
     margin: 0;
   }
+}
+
+.questions-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.questions-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }

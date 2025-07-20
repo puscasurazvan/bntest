@@ -5,7 +5,7 @@ interface Question {
   text: string;
 }
 
-interface QuestionsResponse {
+export interface QuestionsResponse {
   questions: Question[];
   user: string;
   completed?: boolean;
@@ -15,31 +15,29 @@ interface QuestionsResponse {
   };
 }
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
+const fetchQuestions = async (user: string): Promise<QuestionsResponse> => {
+  const response = await fetch(
+    `${apiUrl}/questions?user=${encodeURIComponent(user)}`
+  );
+
+  if (!response.ok) {
+    throw new Error("`Failed to fetch questions: ${response.statusText}`");
+  }
+
+  return response.json();
+};
+
 export const useUserFromUrl = (): string | null => {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("user");
 };
 
 export const useFetchQuestions = (user: string | null) => {
-  return useQuery<QuestionsResponse>({
+  return useQuery({
     queryKey: ["questions", user],
-    queryFn: async () => {
-      if (!user) {
-        throw new Error("User parameter is required");
-      }
-
-      const response = await fetch(
-        `https://fhc-api.onrender.com/questions?user=${encodeURIComponent(
-          user
-        )}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch questions: ${response.statusText}`);
-      }
-
-      return response.json();
-    },
+    queryFn: () => fetchQuestions(user!),
     enabled: !!user,
   });
 };
