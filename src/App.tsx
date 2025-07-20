@@ -36,8 +36,10 @@ function App() {
           and how to get started.
         </p>
       </div>
+      {/* TODO: progresul bara albastra */}
       <Progressbar />
       <Questionnaire />
+      {/* TODO: add results component */}
     </div>
   );
 }

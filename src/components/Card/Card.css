@@ -13,7 +13,10 @@
   margin-left: 1.5rem;
 }
 
-.card-icon {
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   left: 0;
   top: 50%;
@@ -22,8 +25,8 @@
   transform: translate(-50%, -50%);
   padding: 16px;
   border-radius: 50%;
-  height: 64px;
-  width: 64px;
+  height: 52px;
+  width: 52px;
 }
 
 .card-title {

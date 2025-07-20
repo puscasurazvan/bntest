@@ -29,11 +29,6 @@ const fetchQuestions = async (user: string): Promise<QuestionsResponse> => {
   return response.json();
 };
 
-export const useUserFromUrl = (): string | null => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get("user");
-};
-
 export const useFetchQuestions = (user: string | null) => {
   return useQuery({
     queryKey: ["questions", user],

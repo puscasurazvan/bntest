@@ -15,12 +15,9 @@ export const Card = ({
 }: CardProps) => {
   return (
     <div className="card">
-      <img
-        src={icon}
-        alt={title}
-        className="card-icon"
-        style={{ borderColor: iconBorderColor }}
-      />
+      <div className="icon-wrapper" style={{ borderColor: iconBorderColor }}>
+        <img src={icon} alt={title} className="card-icon" />
+      </div>
       <h6 className="card-title">{title}</h6>
       <p className="card-subtitle">{subtitle}</p>
     </div>
