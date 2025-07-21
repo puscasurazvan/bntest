@@ -23,7 +23,7 @@
 - [ ] Unit and integration tests with React Testing Library
 - [ ] Tailwind CSS integration for faster styling
 - [ ] Progress persistence across sessions
-- [ ] Add Sentry for better error detection
+- [ ] Add Sentry for better error detection & monitoring
 
 ## 📦 Installation & Setup
 
