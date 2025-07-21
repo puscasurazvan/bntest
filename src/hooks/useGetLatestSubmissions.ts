@@ -16,9 +16,7 @@ const fetchLatestSubmissions = async (
   );
 
   if (response.ok === false && response.status === 404) {
-    throw new Error(
-      `User hasn't submitted any answers, ${response.statusText}`
-    );
+    throw new Error("User hasn't submitted any answers");
   }
 
   return response.json();

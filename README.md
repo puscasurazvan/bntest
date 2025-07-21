@@ -10,7 +10,7 @@
 - Classic CSS Components
 - dateFNS for date formatting ( lightweight lib and updated regularly )
 - Custom API hooks using Tanstack Query for better api calls, error handling
-- UI deployment: [UI](https://https://bntest.vercel.app)
+- UI deployment: [UI](https://bntest.vercel.app)
 - Vercel
 - Motion for smooth animations
 
@@ -20,3 +20,5 @@
 - Handle login using clerk / auth0
 - Improve state management, maybe use tools liks jotai, to access data globally in the app
 - Better error handling, error component, loading spinner
+- Tests using React Testing library
+- Use Tailwind for easier development, not needed in my opinion for this kind of test

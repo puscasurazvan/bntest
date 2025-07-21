@@ -22,8 +22,8 @@ const fetchQuestions = async (user: string): Promise<QuestionsResponse> => {
     `${apiUrl}/questions?user=${encodeURIComponent(user)}`
   );
 
-  if (!response.ok) {
-    throw new Error("`Failed to fetch questions: ${response.statusText}`");
+  if (response.ok === false) {
+    throw new Error("Failed to fetch questions");
   }
 
   return response.json();

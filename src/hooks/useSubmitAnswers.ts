@@ -25,8 +25,8 @@ const submitAnswers = async ({
     body: JSON.stringify({ answers }),
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to submit answers:" + response.statusText);
+  if (response.ok === false) {
+    throw new Error("Failed to submit answers");
   }
 
   return response.json();
