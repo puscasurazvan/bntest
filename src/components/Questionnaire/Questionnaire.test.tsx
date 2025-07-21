@@ -115,11 +115,11 @@ describe("Questionnaire", () => {
   describe("when loading questions", () => {
     beforeEach(() => {
       mockUseFetchQuestions.mockReturnValue({
-        data: null,
+        data: undefined,
         isLoading: true,
         isError: false,
         error: null,
-      });
+      } as any);
     });
 
     it("shows loading message", () => {
@@ -132,11 +132,11 @@ describe("Questionnaire", () => {
   describe("when there is an error loading questions", () => {
     beforeEach(() => {
       mockUseFetchQuestions.mockReturnValue({
-        data: null,
+        data: undefined,
         isLoading: false,
         isError: true,
-        error: { message: "Network error" },
-      });
+        error: { message: "Network error", name: "NetworkError" },
+      } as any);
     });
 
     it("shows error message", () => {
@@ -154,7 +154,29 @@ describe("Questionnaire", () => {
       mockUseGetLatestSubmissions.mockReturnValue({
         data: { ok: true, latestSubmission: "2024-01-15T10:30:00Z" },
         refetch: vi.fn(),
-      });
+        isLoading: false,
+        isError: false,
+        error: null,
+        isPending: false,
+        isSuccess: true,
+        status: "success",
+        dataUpdatedAt: 0,
+        errorUpdatedAt: 0,
+        failureCount: 0,
+        failureReason: null,
+        fetchStatus: "idle",
+        isFetched: true,
+        isFetchedAfterMount: true,
+        isFetching: false,
+        isInitialLoading: false,
+        isLoadingError: false,
+        isPlaceholderData: false,
+        isPaused: false,
+        isRefetchError: false,
+        isRefetching: false,
+        isStale: false,
+        remove: vi.fn(),
+      } as any);
     });
 
     it("shows results component", () => {
@@ -193,7 +215,7 @@ describe("Questionnaire", () => {
 
     it("shows finish button when all questions are answered", () => {
       // Mock that we have answers for all questions
-      const { rerender } = render(<Questionnaire />);
+      render(<Questionnaire />);
 
       // Simulate answering all questions by mocking internal state
       // Since we can't easily access internal state, we'll test the UI behavior
@@ -217,7 +239,18 @@ describe("Questionnaire", () => {
         mutate: vi.fn(),
         isPending: true,
         isSuccess: false,
-      });
+        data: undefined,
+        error: null,
+        variables: undefined,
+        isError: false,
+        isIdle: false,
+        status: "pending",
+        reset: vi.fn(),
+        mutateAsync: vi.fn(),
+        failureCount: 0,
+        failureReason: null,
+        submittedAt: 0,
+      } as any);
     });
 
     it("shows submitting state", () => {
@@ -232,11 +265,11 @@ describe("Questionnaire", () => {
     beforeEach(() => {
       // Setup with multiple questions for navigation testing
       mockUseFetchQuestions.mockReturnValue({
-        data: { questions: mockQuestions },
+        data: { questions: mockQuestions, user: "test-user" },
         isLoading: false,
         isError: false,
         error: null,
-      });
+      } as any);
     });
 
     it("handles keyboard navigation - arrow down", () => {
@@ -382,10 +415,8 @@ describe("Questionnaire", () => {
     });
 
     it("shows finish button when all questions are answered", async () => {
-      const user = userEvent.setup();
-
       // Mock the component to simulate all questions answered
-      const { rerender } = render(<Questionnaire />);
+      render(<Questionnaire />);
 
       // We can't easily simulate the full flow, but we can test the condition
       // by checking that the finish button appears when appropriate
