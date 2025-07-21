@@ -1,7 +1,7 @@
 .header {
   height: 180px;
   background-color: #f5f7fa;
-  background-image: url("../../assets/discover-journey-maze.svg");
+  background-image: url("/assets/discover-journey-maze.svg");
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;

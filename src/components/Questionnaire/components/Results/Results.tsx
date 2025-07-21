@@ -10,7 +10,7 @@ export const Results = ({ dateCompleted, onButtonClick }: ResultsProps) => {
     <div className="results-container">
       <div className="results-header">
         <img
-          src="/src/assets/graduation.svg"
+          src="/assets/graduation.svg"
           alt="Graduation celebration"
           className="graduation-image"
         />

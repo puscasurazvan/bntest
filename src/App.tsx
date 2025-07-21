@@ -9,19 +9,19 @@ function App() {
         <Card
           title="24 questions"
           subtitle="Answer 24 questins about your working style and career preferences"
-          icon="/src/assets/icons/clipboard-question.svg"
+          icon="/assets/icons/clipboard-question.svg"
           iconBorderColor="#3b82f6"
         />
         <Card
           title="2 minutes"
           subtitle="Gain insights into your future career in just two minutes."
           iconBorderColor="#10b981"
-          icon="/src/assets/icons/stopwatch.svg"
+          icon="/assets/icons/stopwatch.svg"
         />
         <Card
           title="Personalised advice"
           subtitle="Receive personalised advice to guide you on your next steps"
-          icon="/src/assets/icons/scissor-cutting.svg"
+          icon="/assets/icons/scissor-cutting.svg"
           iconBorderColor="#f59e0b"
         />
       </div>
