@@ -2,16 +2,20 @@ import {
   useFetchQuestions,
   useSubmitAnswers,
   useUserFromUrl,
+  useGetLatestSubmissions,
 } from "../../hooks";
 import "./Questionnaire.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { QuestionOptions } from "./components";
+import { QuestionOptions, Results } from "./components";
+import { formatDate } from "../../utils";
 
 export const Questionnaire = () => {
   const user = useUserFromUrl();
   const { data, isLoading, isError, error } = useFetchQuestions(user);
-  const { mutate: submitAnswers, isPending } = useSubmitAnswers();
+  const { mutate: submitAnswers, isPending, isSuccess } = useSubmitAnswers();
+  const { data: latestSubmissionData, refetch: refetchLatestSubmissions } =
+    useGetLatestSubmissions(user);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [animationDirection, setAnimationDirection] = useState<
@@ -21,6 +25,7 @@ export const Questionnaire = () => {
   const [answers, setAnswers] = useState<
     Array<{ questionId: string; answer: number }>
   >([]);
+  const [showResults, setShowResults] = useState(false);
   const questionsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,6 +34,13 @@ export const Questionnaire = () => {
     setIsAnimating(false);
     setAnswers([]);
   }, [data]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowResults(true);
+      refetchLatestSubmissions();
+    }
+  }, [isSuccess, refetchLatestSubmissions]);
 
   const changeQuestion = useCallback(
     (newIndex: number, direction: "down" | "up") => {
@@ -127,6 +139,29 @@ export const Questionnaire = () => {
           <p>Please provide a user parameter in the URL.</p>
         </div>
       </div>
+    );
+  }
+
+  if (
+    user &&
+    (showResults ||
+      (latestSubmissionData?.ok && latestSubmissionData.latestSubmission))
+  ) {
+    const completionDate = latestSubmissionData?.ok
+      ? formatDate(latestSubmissionData?.latestSubmission)
+      : "";
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <Results
+          dateCompleted={completionDate || ""}
+          onButtonClick={() => window.location.reload()}
+        />
+      </motion.div>
     );
   }
 
@@ -229,7 +264,10 @@ export const Questionnaire = () => {
               </button>
             </motion.div>
           )}
-          <p>
+          <p
+            className="questions-footer"
+            style={{ marginTop: allQuestionsAnswered ? "40px" : "60px" }}
+          >
             To review your previous answers, scroll back before selecting finish
           </p>
         </div>

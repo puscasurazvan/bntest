@@ -3,18 +3,12 @@
   background-color: #f5f7fa;
   background-image: url("../../assets/discover-journey-maze.svg");
   background-repeat: no-repeat;
-  background-position: 20px 30px; /* X: 20px from left, Y: 30px from top */
+  background-position: 20px -135px;
   background-size: cover;
   display: flex;
-  /* align-items: center; */
   width: 100%;
   flex-direction: column;
-}
-
-.header-content {
-  /* width: 100%;
-  padding: 0 20px; */
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
+  justify-content: flex-end;
+  padding: 20px;
+  box-sizing: border-box;
 }

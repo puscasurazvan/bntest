@@ -1,5 +1,5 @@
 import "./App.css";
-import { Card, Header, Progressbar, Questionnaire } from "./components";
+import { Card, Header, Questionnaire } from "./components";
 
 function App() {
   return (
@@ -37,9 +37,7 @@ function App() {
         </p>
       </div>
       {/* TODO: progresul bara albastra */}
-      <Progressbar />
       <Questionnaire />
-      {/* TODO: add results component */}
     </div>
   );
 }

@@ -2,9 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 
 interface LatestSubmissionResponse {
   ok: true;
-  latestSubmission: {
-    date: string;
-  };
+  latestSubmission: string;
+  // Assuming latestSubmission is a string representing the date
 }
 
 interface NotFoundResponse {
@@ -23,16 +22,9 @@ const fetchLatestSubmissions = async (
     `${apiUrl}/submissions?user=${encodeURIComponent(user)}`
   );
 
-  if (response.status === 404) {
-    return {
-      ok: false,
-      reason: "notFound",
-    };
-  }
-
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch latest submissions: ${response.statusText}`
+      `User hasn't submitted any answers, ${response.statusText}`
     );
   }
 
