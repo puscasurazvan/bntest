@@ -4,7 +4,7 @@
 - Project was done in 2 sessions, tried not to go over the 3 hours allocation (too much)
 - Main logic sits within the Questionnaire component, which is checking if the user is "logged in", check if the user submitted any questions, if the user had submitted we display results component, otherwise we start the questionnaire
 
-# Technologies used:
+## Technologies used:
 
 - React 18 ( Vite with Typescript )
 - Classic CSS Components
@@ -14,11 +14,64 @@
 - Vercel
 - Motion for smooth animations
 
-## ✅ Things to do:
+## 🔮 Future Enhancements
 
-- Make it even more responsive for different types of devices
-- Handle login using clerk / auth0
-- Improve state management, maybe use tools liks jotai, to access data globally in the app
-- Better error handling, error component, loading spinner
-- Tests using React Testing library
-- Use Tailwind for easier development, not needed in my opinion for this kind of test
+- [ ] Enhanced responsive design for all device types
+- [ ] Authentication system integration (Clerk/Auth0)
+- [ ] Global state management with Jotai
+- [ ] Comprehensive error handling and loading states
+- [ ] Unit and integration tests with React Testing Library
+- [ ] Tailwind CSS integration for faster styling
+- [ ] Progress persistence across sessions
+- [ ] Additional question types and assessment categories
+
+## 📦 Installation & Setup
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/puscasurazvan/bntest.git
+   cd bright
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   cp .env.example .env
+   # Add your API URL to the .env file
+   VITE_API_URL=your_api_endpoint_here
+   ```
+
+4. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   Navigate to `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+│   ├── Card/            # Feature cards
+│   ├── Details/         # Assessment details section
+│   ├── Header/          # Application header
+│   ├── Questionnaire/   # Main questionnaire logic
+│   └── Questions/       # Question components
+├── hooks/               # Custom React hooks
+│   ├── useFetchQuestions.ts
+│   ├── useGetLatestSubmissions.ts
+│   ├── useSubmitAnswers.ts
+│   └── useUserFromUrl.ts
+├── utils/               # Utility functions
+└── App.tsx              # Main application component
+```
