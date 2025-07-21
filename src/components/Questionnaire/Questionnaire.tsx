@@ -7,8 +7,9 @@ import {
 import "./Questionnaire.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { QuestionOptions, Results } from "./components";
+import { Progressbar, QuestionOptions, Results } from "./components";
 import { formatDate } from "../../utils";
+import { v4 as uuid } from "uuid";
 
 export const Questionnaire = () => {
   const user = useUserFromUrl();
@@ -132,12 +133,19 @@ export const Questionnaire = () => {
     }
   };
 
+  const handleLogin = () => {
+    const userId = uuid();
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set("user", userId);
+    window.location.href = currentUrl.toString();
+  };
+
   if (!user) {
     return (
-      <div className="questionnaire">
-        <div className="error-message">
-          <p>Please provide a user parameter in the URL.</p>
-        </div>
+      <div className="questionnaire" style={{ marginTop: "20px" }}>
+        <button className="login-button" onClick={handleLogin}>
+          Login
+        </button>
       </div>
     );
   }
@@ -186,92 +194,100 @@ export const Questionnaire = () => {
 
   const currentQuestion = data?.questions?.[currentQuestionIndex];
   const totalQuestions = data?.questions?.length ?? 0;
+  const progressPercentage =
+    totalQuestions > 0
+      ? Math.round((answers.length / totalQuestions) * 100)
+      : 0;
 
   return (
-    <div className="questionnaire">
-      {currentQuestion && (
-        <div className="questions-container" ref={questionsContainerRef}>
-          <div className="single-question-view">
-            <AnimatePresence
-              mode="wait"
-              custom={animationDirection}
-              onExitComplete={() => setIsAnimating(false)}
-            >
-              <motion.div
-                key={currentQuestion.id}
-                className="question-item"
+    <>
+      <Progressbar progressPercentage={progressPercentage} />
+      <div className="questionnaire">
+        {currentQuestion && (
+          <div className="questions-container" ref={questionsContainerRef}>
+            <div className="single-question-view">
+              <AnimatePresence
+                mode="wait"
                 custom={animationDirection}
-                variants={{
-                  enter: (direction: "down" | "up" | null) => ({
-                    y:
-                      direction === "down"
-                        ? 100
-                        : direction === "up"
-                        ? -100
-                        : 0,
-                    opacity: 0,
-                  }),
-                  center: {
-                    y: 0,
-                    opacity: 1,
-                    transition: { duration: 0.3, ease: "easeInOut" },
-                  },
-                  exit: (direction: "down" | "up") => ({
-                    y: direction === "down" ? -100 : 100,
-                    opacity: 0,
-                    transition: { duration: 0.3, ease: "easeInOut" },
-                  }),
-                }}
-                initial="enter"
-                animate="center"
-                exit="exit"
+                onExitComplete={() => setIsAnimating(false)}
               >
-                <div className="questions-wrapper">
-                  <span className="question-number">
-                    Q{currentQuestionIndex + 1}/{totalQuestions}{" "}
-                  </span>
-                  <div className="questions-text-wrapper">
-                    <p>In a job, I would be motivated by:</p>
-                    <p>{currentQuestion.text}</p>
-                    <QuestionOptions
-                      onSelectOption={(option) =>
-                        handleSelectOption(currentQuestion.id, option)
-                      }
-                      selectedOption={
-                        answers.find(
-                          (answer) => answer.questionId === currentQuestion.id
-                        )?.answer ?? null
-                      }
-                    />
+                <motion.div
+                  key={currentQuestion.id}
+                  className="question-item"
+                  custom={animationDirection}
+                  variants={{
+                    enter: (direction: "down" | "up" | null) => ({
+                      y:
+                        direction === "down"
+                          ? 100
+                          : direction === "up"
+                          ? -100
+                          : 0,
+                      opacity: 0,
+                    }),
+                    center: {
+                      y: 0,
+                      opacity: 1,
+                      transition: { duration: 0.3, ease: "easeInOut" },
+                    },
+                    exit: (direction: "down" | "up") => ({
+                      y: direction === "down" ? -100 : 100,
+                      opacity: 0,
+                      transition: { duration: 0.3, ease: "easeInOut" },
+                    }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                >
+                  <div className="questions-wrapper">
+                    <span className="question-number">
+                      Q{currentQuestionIndex + 1}/{totalQuestions}{" "}
+                    </span>
+                    <div className="questions-text-wrapper">
+                      <p>In a job, I would be motivated by:</p>
+                      <p>{currentQuestion.text}</p>
+                      <QuestionOptions
+                        onSelectOption={(option) =>
+                          handleSelectOption(currentQuestion.id, option)
+                        }
+                        selectedOption={
+                          answers.find(
+                            (answer) => answer.questionId === currentQuestion.id
+                          )?.answer ?? null
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          {allQuestionsAnswered && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="finish-button-container"
-            >
-              <button
-                onClick={handleSubmit}
-                disabled={isPending}
-                className="finish-button"
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            {allQuestionsAnswered && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="finish-button-container"
               >
-                {isPending ? "Submitting..." : "Finish"}
-              </button>
-            </motion.div>
-          )}
-          <p
-            className="questions-footer"
-            style={{ marginTop: allQuestionsAnswered ? "40px" : "60px" }}
-          >
-            To review your previous answers, scroll back before selecting finish
-          </p>
-        </div>
-      )}
-    </div>
+                <button
+                  onClick={handleSubmit}
+                  disabled={isPending}
+                  className="finish-button"
+                >
+                  {isPending ? "Submitting..." : "Finish"}
+                </button>
+              </motion.div>
+            )}
+            <p
+              className="questions-footer"
+              style={{ marginTop: allQuestionsAnswered ? "40px" : "60px" }}
+            >
+              To review your previous answers, scroll back before selecting
+              finish
+            </p>
+          </div>
+        )}
+      </div>
+    </>
   );
 };

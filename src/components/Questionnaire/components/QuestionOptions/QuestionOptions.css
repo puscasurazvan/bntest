@@ -10,14 +10,14 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 12px;
+  font-size: 12px;
 }
 
 .options-container {
   display: flex;
-  justify-content: center;
-  gap: 30px;
+  gap: 10px;
   position: relative;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .options-container::before {
@@ -36,8 +36,8 @@
   background-color: #f0f0f0;
   border: 1px solid #007bff;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,4 +55,14 @@
   background-color: #007bff;
   color: white;
   border-color: #007bff;
+}
+
+@media (min-width: 768px) {
+  .options-container {
+    gap: 56px;
+    margin: 20px 0;
+  }
+  .options-labels {
+    font-size: 16px;
+  }
 }

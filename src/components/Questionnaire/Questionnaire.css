@@ -5,9 +5,15 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 50px;
+  padding: 5%;
   width: 100%;
-  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .questionnaire {
+    padding: 20px;
+  }
 }
 
 .question-number {
@@ -38,6 +44,15 @@
 }
 
 .finish-button {
+  padding: 8px 32px;
+  border-radius: 9px;
+  border: none;
+  background-color: #e98941;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.login-button {
   padding: 8px 32px;
   border-radius: 9px;
   border: none;
