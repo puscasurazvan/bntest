@@ -150,6 +150,25 @@ export const Questionnaire = () => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="questionnaire">
+        <p>Loading your questions...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="questionnaire" style={{ marginTop: "20px" }}>
+        <div className="error-message">
+          <p>Error loading questions: {error?.message}</p>
+          <p>Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
+
   if (
     user &&
     (showResults ||
@@ -170,25 +189,6 @@ export const Questionnaire = () => {
           onButtonClick={() => window.location.reload()}
         />
       </motion.div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="questionnaire">
-        <p>Loading your questions...</p>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="questionnaire">
-        <div className="error-message">
-          <p>Error loading questions: {error?.message}</p>
-          <p>Please try again later.</p>
-        </div>
-      </div>
     );
   }
 
