@@ -2,17 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 
 interface LatestSubmissionResponse {
   ok: true;
-  latestSubmission: string;
-  // Assuming latestSubmission is a string representing the date
+  latestSubmission?: string;
 }
 
-interface NotFoundResponse {
-  ok: false;
-  reason: "notFound";
-}
-
-type GetLatestSubmissionsResponse = LatestSubmissionResponse | NotFoundResponse;
-
+type GetLatestSubmissionsResponse = LatestSubmissionResponse;
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const fetchLatestSubmissions = async (
@@ -22,7 +15,7 @@ const fetchLatestSubmissions = async (
     `${apiUrl}/submissions?user=${encodeURIComponent(user)}`
   );
 
-  if (!response.ok) {
+  if (response.ok === false && response.status === 404) {
     throw new Error(
       `User hasn't submitted any answers, ${response.statusText}`
     );

@@ -1,0 +1,6 @@
+.text-wrapper {
+  margin-top: 40px;
+  > :last-child {
+    margin-top: 20px;
+  }
+}

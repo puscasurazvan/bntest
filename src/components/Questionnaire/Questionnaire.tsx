@@ -153,11 +153,11 @@ export const Questionnaire = () => {
   if (
     user &&
     (showResults ||
-      (latestSubmissionData?.ok && latestSubmissionData.latestSubmission))
+      (latestSubmissionData?.ok && latestSubmissionData?.latestSubmission))
   ) {
-    const completionDate = latestSubmissionData?.ok
-      ? formatDate(latestSubmissionData?.latestSubmission)
-      : "";
+    const completionDate = formatDate(
+      latestSubmissionData?.latestSubmission ?? ""
+    );
 
     return (
       <motion.div
