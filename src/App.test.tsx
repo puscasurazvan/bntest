@@ -56,7 +56,12 @@ describe("App", () => {
       isLoading: false,
       isError: false,
       error: null,
-    } as any);
+      isSuccess: true,
+      isPending: false,
+      refetch: vi.fn(),
+      fetchStatus: "idle" as const,
+      status: "success" as const,
+    } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
     mockedHooks.useSubmitAnswers.mockReturnValue({
       mutate: vi.fn(),
       isPending: false,
@@ -66,17 +71,17 @@ describe("App", () => {
       variables: undefined,
       isError: false,
       isIdle: true,
-      status: "idle",
+      status: "idle" as const,
       reset: vi.fn(),
       mutateAsync: vi.fn(),
       failureCount: 0,
       failureReason: null,
       submittedAt: 0,
-    } as any);
+    } as unknown as ReturnType<typeof hooks.useSubmitAnswers>);
     mockedHooks.useGetLatestSubmissions.mockReturnValue({
       data: undefined,
       refetch: vi.fn(),
-    } as any);
+    } as unknown as ReturnType<typeof hooks.useGetLatestSubmissions>);
   });
 
   it("renders without crashing", () => {

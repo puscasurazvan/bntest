@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Questionnaire } from "./Questionnaire";
 import * as hooks from "../../hooks";
+import { vi } from "vitest";
 
 // Mock the hooks
 vi.mock("../../hooks", () => ({
@@ -66,16 +67,16 @@ describe("Questionnaire", () => {
       isLoading: false,
       isError: false,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
     mockUseSubmitAnswers.mockReturnValue({
       mutate: vi.fn(),
       isPending: false,
       isSuccess: false,
-    } as any);
+    } as unknown as ReturnType<typeof hooks.useSubmitAnswers>);
     mockUseGetLatestSubmissions.mockReturnValue({
       data: undefined,
       refetch: vi.fn(),
-    } as any);
+    } as unknown as ReturnType<typeof hooks.useGetLatestSubmissions>);
   });
 
   describe("when user is not logged in", () => {
@@ -119,7 +120,7 @@ describe("Questionnaire", () => {
         isLoading: true,
         isError: false,
         error: null,
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
     });
 
     it("shows loading message", () => {
@@ -136,7 +137,7 @@ describe("Questionnaire", () => {
         isLoading: false,
         isError: true,
         error: { message: "Network error", name: "NetworkError" },
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
     });
 
     it("shows error message", () => {
@@ -176,7 +177,7 @@ describe("Questionnaire", () => {
         isRefetching: false,
         isStale: false,
         remove: vi.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
     });
 
     it("shows results component", () => {
@@ -250,7 +251,7 @@ describe("Questionnaire", () => {
         failureCount: 0,
         failureReason: null,
         submittedAt: 0,
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useSubmitAnswers>);
     });
 
     it("shows submitting state", () => {
@@ -269,7 +270,7 @@ describe("Questionnaire", () => {
         isLoading: false,
         isError: false,
         error: null,
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
     });
 
     it("handles keyboard navigation - arrow down", () => {
@@ -526,7 +527,7 @@ describe("Questionnaire", () => {
         isLoading: false,
         isError: false,
         error: null,
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
 
       render(<Questionnaire />);
 
@@ -540,7 +541,7 @@ describe("Questionnaire", () => {
         isLoading: false,
         isError: false,
         error: null,
-      } as any);
+      } as unknown as ReturnType<typeof hooks.useFetchQuestions>);
 
       render(<Questionnaire />);
 
