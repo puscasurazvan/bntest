@@ -1,8 +1,8 @@
 import "./Card.css";
 
 interface CardProps {
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   icon: string;
   iconBorderColor?: string;
 }
