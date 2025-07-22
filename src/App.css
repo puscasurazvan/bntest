@@ -9,8 +9,10 @@
   flex-direction: row;
   gap: 32px;
   align-items: flex-start;
-  flex-wrap: no-wrap;
   margin-top: 40px;
+  > * {
+    flex: 1;
+  }
 }
 
 @media (max-width: 768px) {
