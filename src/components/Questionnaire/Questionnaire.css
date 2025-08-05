@@ -5,14 +5,14 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 5%;
+  padding: 20px;
   width: 100%;
   margin-bottom: 20px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .questionnaire {
-    padding: 20px;
+    padding: 5%;
   }
 }
 
@@ -24,9 +24,10 @@
   display: flex;
   flex-direction: column;
   margin-left: 12px;
-  > * {
-    margin: 0;
-  }
+}
+
+.questions-text-wrapper > * {
+  margin: 0;
 }
 
 .questions-wrapper {
@@ -43,15 +44,7 @@
   align-items: center;
 }
 
-.finish-button {
-  padding: 8px 32px;
-  border-radius: 9px;
-  border: none;
-  background-color: #e98941;
-  font-weight: 600;
-  margin-top: 20px;
-}
-
+.finish-button,
 .login-button {
   padding: 8px 32px;
   border-radius: 9px;

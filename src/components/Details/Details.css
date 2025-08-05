@@ -1,6 +1,9 @@
 .text-wrapper {
-  margin-top: 40px;
-  > :last-child {
-    margin-top: 20px;
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .text-wrapper {
+    margin-top: 40px;
   }
 }

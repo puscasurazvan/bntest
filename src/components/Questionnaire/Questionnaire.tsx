@@ -16,7 +16,10 @@ export const Questionnaire = () => {
   const { data, isLoading, isError, error } = useFetchQuestions(user);
   const { mutate: submitAnswers, isPending, isSuccess } = useSubmitAnswers();
   const { data: latestSubmissionData, refetch: refetchLatestSubmissions } =
-    useGetLatestSubmissions(user);
+    useGetLatestSubmissions(user, {
+      refetchOnMount: true,
+      retry: false,
+    });
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [animationDirection, setAnimationDirection] = useState<
@@ -186,6 +189,7 @@ export const Questionnaire = () => {
       >
         <Results
           dateCompleted={completionDate || ""}
+          // TODO: make this push to separate page
           onButtonClick={() => window.location.reload()}
         />
       </motion.div>

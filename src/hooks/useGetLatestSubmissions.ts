@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 
 interface LatestSubmissionResponse {
   ok: true;
@@ -22,10 +22,17 @@ const fetchLatestSubmissions = async (
   return response.json();
 };
 
-export const useGetLatestSubmissions = (user: string | null) => {
+export const useGetLatestSubmissions = (
+  user: string | null,
+  options?: Omit<
+    UseQueryOptions<GetLatestSubmissionsResponse>,
+    "queryKey" | "queryFn" | "enabled"
+  >
+) => {
   return useQuery({
     queryKey: ["latestSubmissions", user],
     queryFn: () => fetchLatestSubmissions(user!),
     enabled: !!user,
+    ...options,
   });
 };
